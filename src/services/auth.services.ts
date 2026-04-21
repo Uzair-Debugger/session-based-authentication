@@ -24,8 +24,8 @@ const handleSignup =async (req: Request<{},{}, signUpInterface>, res:Response) =
         email,
         password: hashPassword
     });
-    
-    return res.status(201).json({"message": "User signup Successfully"})
+
+    return res.status(201).json({"message": "User signup Successfully", "userId": user.id})
 
 }
 
