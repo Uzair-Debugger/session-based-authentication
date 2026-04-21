@@ -52,11 +52,9 @@ export const handleLogin = async (req: Request<{},{}, signUpInterface>, res:Resp
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-        console.log("User JSON:", user.toJSON());
 
         // 3. Compare password
-        console.log(`User password: ${password}, Actual Password ${user.password}`)
-        const isMatch = await bcrypt.compare(password, user.toJSON().password);
+        const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
             return res.status(401).json({ message: "Invalid credentials" });

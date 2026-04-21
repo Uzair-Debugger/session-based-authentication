@@ -1,59 +1,53 @@
 import sequelize from "../config/dbConfig.js";
 import { DataTypes, Model } from "sequelize";
-import type { Optional } from "sequelize";
+import type { CreationOptional, InferAttributes, InferCreationAttributes } from "sequelize";
 
-interface UserAttributes{
-    id: number;
-    name: string;
-    email: string;
-    password: string;
-}
+class User extends Model<
+  InferAttributes<User, { omit: "createdAt" | "updatedAt" }>,
+  InferCreationAttributes<User, { omit: "createdAt" | "updatedAt" }>
+> {
+  declare id: CreationOptional<number>;
+  declare name: string;
+  declare email: string;
+  declare password: string;
 
-interface UserCreationAttributes extends Optional<UserAttributes, "id">{}
-
-class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes{
-    public id!:number;
-    public name!: string;
-    public email!: string;
-    public password!: string;
-
-    public readonly createdAt!: Date;
-    public readonly updatedAt!: Date;
+  declare createdAt: CreationOptional<Date>;
+  declare updatedAt: CreationOptional<Date>;
 }
 
 User.init(
-    {
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
-        },
-
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-
-        email: {
-            type: DataTypes.STRING,
-            unique: true,
-            allowNull: false,
-            validate: {
-                isEmail: true
-            }
-        },
-
-        password: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
 
-    {
-        sequelize,
-        modelName: "User",
-        tableName: "users"
-    }
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+    email: {
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: false,
+      validate: {
+        isEmail: true,
+      },
+    },
+
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  },
+  {
+    sequelize,
+    modelName: "User",
+    tableName: "users",
+    timestamps: true, // explicit is better
+  }
 );
 
 export default User;
