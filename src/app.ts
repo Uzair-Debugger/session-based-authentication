@@ -5,6 +5,7 @@ import User from './models/user.model.js';
 import portConfig from './config/portConfig.js';
 import {authRouter} from './routes/auth.routes.js';
 import createSession from './middlewares/session.middleware.js';
+import { userRouter } from './routes/user.route.js';
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use(cors());
 app.use(createSession);
 app.use(authRouter);
+app.use(userRouter);
 
 (async()=>{
     try{

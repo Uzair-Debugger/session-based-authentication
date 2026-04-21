@@ -72,3 +72,18 @@ export const handleLogin = async (req: Request<{},{}, signUpInterface>, res:Resp
         return res.status(500).json({ message: "Server error" });
     }
 };
+
+
+// logout
+export const handleLogout = (req:Request, res:Response) =>{
+    
+    req.session.destroy((err)=>{
+        if(err){
+            return res.status(400).json({"message": `Logout Failed: ${err}`})
+        }
+    })
+
+    res.clearCookie("connect.sid");
+
+    return res.status(200).json({"message": "Logged out"})
+}
